@@ -1,0 +1,180 @@
+@startuml mistral
+!theme toy
+
+' hide the spot
+' hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity "Artist" as art {
+  *id : integer <<PK>> <<generated>>
+  --
+  *name : string
+  comment : string
+  --
+  *revision : integer
+  *created_at : timestamp
+  *updated_at : timestamp
+}
+
+entity "Album" as alb {
+  *id : integer <<PK>> <<generated>>
+  --
+  *title : string
+  comment : string
+  *artist_id : integer <<FK>>
+  --
+  *revision : integer
+  *created_at : timestamp
+  *updated_at : timestamp  
+}
+
+entity "Customer" as cust {
+  *id : integer <<PK>> <<generated>>
+  --
+  title : string
+  *first_name : string
+  *last_name : string
+  address : string
+  city : string
+  state : string
+  post_code  : string
+  country : string
+  phone : string
+  fax : string
+  *email : string
+  employee_id : integer <<FK>>   
+  --
+  *revision : integer
+  *created_at : timestamp
+  *updated_at : timestamp  
+}
+
+entity "employee" as emp {
+  *id : integer <<PK>> <<generated>>
+  --
+  title : string
+  *first_name : string
+  *last_name : string
+  *date_of_birth :date
+  *hire_date : date
+  address : string
+  city : string
+  state : string
+  post_code  : string
+  country : string
+  phone : string
+  fax : string
+  *email : string
+  employee_id : integer <<FK>>
+  --
+  *revision : integer
+  *created_at : timestamp
+  *updated_at : timestamp   
+}
+
+entity "Genre" as gen {
+  *id : integer <<PK>> <<generated>>
+  --
+  *name : string
+  comment : string  
+  --
+  *revision : integer
+  *created_at : timestamp
+  *updated_at : timestamp   
+}
+
+entity "Media Type" as med {
+  *id : integer <<PK>> <<generated>>
+  --
+  *name : string
+  comment : string  
+  --
+  *revision : integer
+  *created_at : timestamp
+  *updated_at : timestamp   
+}
+
+entity "Playlist" as play {
+  *id : integer <<PK>> <<generated>>
+  --
+  *name : string
+  comment : string  
+  --
+  *revision : integer
+  *created_at : timestamp
+  *updated_at : timestamp   
+}
+
+entity "Track" as track {
+  *id : integer <<PK>> <<generated>>
+  --
+  *name : string  
+  composer : string
+  milliseconds : integer
+  bytes : integer
+  unit_price : decimal
+  *media_type_id : integer <<FK>>
+  *genre_id : integer <<FK>>
+  *album_id : integer <<FK>> 
+  --
+  *revision : integer
+  *created_at : timestamp
+  *updated_at : timestamp   
+}
+
+entity "Playlist Track" as play_track {
+  *id : integer <<PK>> <<generated>>
+  --
+  *playlist_id : integer <<FK>>
+  *track_id : integer <<FK>>  
+  --
+  *revision : integer
+  *created_at : timestamp
+  *updated_at : timestamp    
+}
+
+entity "Invoice Item" as item {
+  *id : integer <<PK>> <<generated>>
+  --
+  *quantity : integer
+  *unit_price : decimal
+  *track_id : integer <<FK>>
+  *invoice_id : integer <<FK>>
+  --
+  *revision : integer
+  *created_at : timestamp
+  *updated_at : timestamp   
+}
+
+entity "Invoice" as inv {
+  *id : integer <<PK>> <<generated>>
+  --
+  *invoice_date : date
+  address : string
+  city : string
+  state : string
+  post_code : string
+  country : string
+  *total : decimal
+  customer_id : integer <<FK>>  
+  --
+  *revision : integer
+  *created_at : timestamp
+  *updated_at : timestamp   
+}
+
+art ||..o{ alb
+alb ||..o{ track
+emp ||...o{ cust : sales representative
+gen ||...o{ track
+med ||..o{ track
+track ||..o{ play_track
+play ||..o{ play_track
+inv ||..o{ item
+track ||..o{ item
+cust ||..o{ inv
+emp ||..o{ emp : manager
+
+@enduml
