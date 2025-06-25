@@ -114,7 +114,7 @@ entity "Track" as track {
   composer : string
   milliseconds : integer
   bytes : integer
-  unit_price : decimal
+  *unit_price : decimal
   *media_type_id : integer <<FK>>
   *genre_id : integer <<FK>>
   *album_id : integer <<FK>> 
